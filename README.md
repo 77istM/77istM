@@ -1,6 +1,6 @@
-- 👋 Hi, I’m @77istM
+- 👋 Hi, I’m Istiak Mohammad
 - 👀 I’m interested in software application.
-- 🌱 I’m currently learning python.
+- 🌱 I’m currently learning python, Java, R, Kotlin, React native.
 - 💞️ I’m looking to collaborate on ...
 - 📫 How to reach me ...
 
