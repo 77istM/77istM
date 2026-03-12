@@ -1,10 +1,9 @@
 -Java, react native, kotlin, R
 
-
 ~Qiskit, Cobol
 
 ---
-LinkedIn: https://www.linkedin.com/in/istiakmohammad?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+LinkedIn: www.linkedin.com/in/istiakmohammad
 
 <!---
 77istM/77istM is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
