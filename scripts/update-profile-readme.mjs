@@ -44,15 +44,13 @@ const weatherLine = buildWeatherLine(currentWeather, weatherLabel, currentTimeLa
 const lastUpdateLabel = formatLondonDateTime(new Date());
 
 const generatedBlock = [
-
-  `![Profile views](${profileViewsBadgeUrl})`,
-  '',
   '### 🌥️ London (where I\'m living right now)',
   '',
   weatherLine,
   '',
  `![Profile views](${profileViewsBadgeUrl})`,
   '',
+  `This README is auto-updated every 6 hours by GitHub Actions · Last update: ${lastUpdateLabel}`
 ].join('\n');
 
 const startMarker = '<!-- AUTO:START -->';
