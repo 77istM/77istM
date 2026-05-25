@@ -8,9 +8,7 @@
 | Project | Description |
 | --- | --- |
 | [Indoor Navigation App](https://github.com/77istM/Mall_Navigator_App "app repo") / [Web Version](https://github.com/77istM/Mall_Navigator_Web "Web Repo") | Location based navigation with GPS, Compass & other sensors|
-
 | [Stock trading bot](https://github.com/77istM/trading-bot "trading-bot") | Predicts, executes stock market tread based on sentiment |
-
 | [Bengali alphabet tracing app](https://github.com/77istM/BengaliAlphabetTracing) | Children bengali phonix learning app on android |
 
 <!-- AUTO:START -->
