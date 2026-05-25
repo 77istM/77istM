@@ -32,29 +32,20 @@ async function fetchJson(url) {
 }
 
 const user = await fetchJson(`https://api.github.com/users/${owner}`);
-const repos = await fetchJson(
-  `https://api.github.com/users/${owner}/repos?sort=updated&direction=desc&per_page=8&type=owner`
-);
 const weather = await fetchJson(
   `https://api.open-meteo.com/v1/forecast?latitude=${londonLatitude}&longitude=${londonLongitude}&current_weather=true&timezone=Europe%2FLondon`
 );
 
-const topRepos = repos
-  .filter((repo) => !repo.fork)
-  .slice(0, 5)
-  .map((repo) => ({
-    name: repo.name,
-    description: repo.description || 'No description yet.',
-    stars: repo.stargazers_count,
-    language: repo.language || 'Mixed',
-    url: repo.html_url,
-  }));
-
 const currentWeather = weather.current_weather || {};
 const weatherLabel = describeWeatherCode(currentWeather.weathercode);
+const weatherBadgeUrl = buildWeatherBadgeUrl('London weather', weatherLabel, formatNumber(currentWeather.temperature));
+const profileViewsBadgeUrl = `https://komarev.com/ghpvc/?username=${encodeURIComponent(owner)}&style=flat-square&color=0e75b6`;
 
 const generatedBlock = [
   '### Live profile snapshot',
+  '',
+  `![Profile views](${profileViewsBadgeUrl})`,
+  `![London weather](${weatherBadgeUrl})`,
   '',
   `- Updated: ${new Date().toISOString()}`,
   `- Public repositories: ${user.public_repos}`,
@@ -67,15 +58,6 @@ const generatedBlock = [
   `- Condition: ${weatherLabel}`,
   `- Temperature: ${formatNumber(currentWeather.temperature)}°C`,
   `- Wind speed: ${formatNumber(currentWeather.windspeed)} km/h`,
-  '',
-  '### Recently active repositories',
-  '',
-  '| Repository | Description | Stars | Language |',
-  '| --- | --- | ---: | --- |',
-  ...topRepos.map(
-    (repo) =>
-      `| [${repo.name}](${repo.url}) | ${escapePipes(repo.description)} | ${repo.stars} | ${escapePipes(repo.language)} |`
-  ),
   '',
   '### Focus',
   '',
@@ -101,12 +83,49 @@ if (nextReadme !== readme) {
   await writeFile(readmePath, nextReadme);
 }
 
-function escapePipes(value) {
-  return String(value).replaceAll('|', '\\|');
-}
-
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function buildWeatherBadgeUrl(label, condition, temperature) {
+  const color = getWeatherBadgeColor(condition);
+  const badgeLabel = encodeBadgePart(label);
+  const badgeValue = encodeBadgePart(`${condition} / ${temperature} C`);
+  return `https://img.shields.io/badge/${badgeLabel}-${badgeValue}-${color}?style=for-the-badge&logo=cloudflare&logoColor=white`;
+}
+
+function encodeBadgePart(value) {
+  return encodeURIComponent(String(value)).replace(/-/g, '%2D');
+}
+
+function getWeatherBadgeColor(condition) {
+  const normalized = String(condition).toLowerCase();
+
+  if (normalized.includes('clear')) {
+    return 'f59e0b';
+  }
+
+  if (normalized.includes('cloud')) {
+    return '64748b';
+  }
+
+  if (normalized.includes('rain') || normalized.includes('drizzle')) {
+    return '0284c7';
+  }
+
+  if (normalized.includes('thunder')) {
+    return '7c3aed';
+  }
+
+  if (normalized.includes('snow')) {
+    return '38bdf8';
+  }
+
+  if (normalized.includes('fog')) {
+    return '94a3b8';
+  }
+
+  return '0ea5e9';
 }
 
 function formatNumber(value) {

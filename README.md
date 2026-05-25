@@ -13,7 +13,10 @@ I build across Java, React Native, Kotlin, R, Qiskit, and COBOL.
 <!-- AUTO:START -->
 ### Live profile snapshot
 
-- Updated: 2026-05-25T10:54:58.344Z
+![Profile views](https://komarev.com/ghpvc/?username=77istM&style=flat-square&color=0e75b6)
+![London weather](https://img.shields.io/badge/London%20weather-Clear%20sky%20%2F%2028.9%20C-f59e0b?style=for-the-badge&logo=cloudflare&logoColor=white)
+
+- Updated: 2026-05-25T11:03:10.687Z
 - Public repositories: 23
 - Followers: 0
 - Following: 4
@@ -22,18 +25,8 @@ I build across Java, React Native, Kotlin, R, Qiskit, and COBOL.
 
 - Location: London, UK
 - Condition: Clear sky
-- Temperature: 28.5°C
+- Temperature: 28.9°C
 - Wind speed: 6.5 km/h
-
-### Recently active repositories
-
-| Repository | Description | Stars | Language |
-| --- | --- | ---: | --- |
-| [77istM](https://github.com/77istM/77istM) | Config files for my GitHub profile. | 0 | JavaScript |
-| [istiakmoh.github.io](https://github.com/77istM/istiakmoh.github.io) | No description yet. | 0 | Mixed |
-| [usaIsrael-iran-war-impact-tracking](https://github.com/77istM/usaIsrael-iran-war-impact-tracking) | Goal is to track the impact of the war throught global economy. | 0 | JavaScript |
-| [Mall_Navigator_App](https://github.com/77istM/Mall_Navigator_App) | No description yet. | 0 | JavaScript |
-| [CVBuilder25](https://github.com/77istM/CVBuilder25) | Java CV management application | 0 | Mixed |
 
 ### Focus
 
@@ -42,6 +35,16 @@ I build across Java, React Native, Kotlin, R, Qiskit, and COBOL.
 - Keep the project page in GitHub Pages free and static.
 
 <!-- AUTO:END -->
+
+## Most committed projects
+
+Update this table manually with the projects you want to highlight most.
+
+| Project | What it is | Stack | Link |
+| --- | --- | --- | --- |
+| Add your top project | Short summary | Tech stack | Repository link |
+| Add your second project | Short summary | Tech stack | Repository link |
+| Add your third project | Short summary | Tech stack | Repository link |
 
 ## Notes
 
