@@ -12,14 +12,13 @@
 | [Bengali alphabet tracing app](https://github.com/77istM/BengaliAlphabetTracing) | Children bengali phonix learning app on android |
 
 <!-- AUTO:START -->
-![Profile views](https://komarev.com/ghpvc/?username=77istM&style=flat-square&color=0e75b6)
-
 ### 🌥️ London (where I'm living right now)
 
-🌤️ 34.4°C (feels 33.7°C) · Clear sky · 💧 25% · 🍃 13.0 km/h · 🕘 16:30 BST
+🌤️ 32.0°C (feels 31.2°C) · Clear sky · 💧 33% · 🍃 14.0 km/h · 🕘 18:45 BST
 
 ![Profile views](https://komarev.com/ghpvc/?username=77istM&style=flat-square&color=0e75b6)
 
+This README is auto-updated every 6 hours by GitHub Actions · Last update: 2026-05-25 18:52 BST
 
 <!-- AUTO:END -->
 
