@@ -33,31 +33,28 @@ async function fetchJson(url) {
 
 const user = await fetchJson(`https://api.github.com/users/${owner}`);
 const weather = await fetchJson(
-  `https://api.open-meteo.com/v1/forecast?latitude=${londonLatitude}&longitude=${londonLongitude}&current_weather=true&timezone=Europe%2FLondon`
+  `https://api.open-meteo.com/v1/forecast?latitude=${londonLatitude}&longitude=${londonLongitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe%2FLondon`
 );
 
-const currentWeather = weather.current_weather || {};
-const weatherLabel = describeWeatherCode(currentWeather.weathercode);
-const weatherBadgeUrl = buildWeatherBadgeUrl('London weather', weatherLabel, formatNumber(currentWeather.temperature));
+const currentWeather = weather.current || {};
+const weatherLabel = describeWeatherCode(currentWeather.weather_code);
 const profileViewsBadgeUrl = `https://komarev.com/ghpvc/?username=${encodeURIComponent(owner)}&style=flat-square&color=0e75b6`;
+const currentTimeLabel = formatLondonTime(weather.current?.time);
+const weatherLine = buildWeatherLine(currentWeather, weatherLabel, currentTimeLabel);
 
 const generatedBlock = [
   '### Live profile snapshot',
   '',
   `![Profile views](${profileViewsBadgeUrl})`,
-  `![London weather](${weatherBadgeUrl})`,
+  '',
+  '### 🌥️ London (where I\'m living right now)',
+  '',
+  weatherLine,
   '',
   `- Updated: ${new Date().toISOString()}`,
   `- Public repositories: ${user.public_repos}`,
   `- Followers: ${user.followers}`,
   `- Following: ${user.following}`,
-  '',
-  '### London weather',
-  '',
-  `- Location: London, UK`,
-  `- Condition: ${weatherLabel}`,
-  `- Temperature: ${formatNumber(currentWeather.temperature)}°C`,
-  `- Wind speed: ${formatNumber(currentWeather.windspeed)} km/h`,
   '',
   '### Focus',
   '',
@@ -87,49 +84,76 @@ function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function buildWeatherBadgeUrl(label, condition, temperature) {
-  const color = getWeatherBadgeColor(condition);
-  const badgeLabel = encodeBadgePart(label);
-  const badgeValue = encodeBadgePart(`${condition} / ${temperature} C`);
-  return `https://img.shields.io/badge/${badgeLabel}-${badgeValue}-${color}?style=for-the-badge&logo=cloudflare&logoColor=white`;
+function buildWeatherLine(currentWeather, weatherLabel, currentTimeLabel) {
+  const icon = getWeatherEmoji(weatherLabel);
+  const temperature = formatNumber(currentWeather.temperature_2m);
+  const feelsLike = formatNumber(currentWeather.apparent_temperature);
+  const humidity = formatInteger(currentWeather.relative_humidity_2m);
+  const windSpeed = formatNumber(currentWeather.wind_speed_10m);
+
+  return `${icon} ${temperature}°C (feels ${feelsLike}°C) · ${weatherLabel} · 💧 ${humidity}% · 🍃 ${windSpeed} km/h · 🕘 ${currentTimeLabel}`;
 }
 
-function encodeBadgePart(value) {
-  return encodeURIComponent(String(value)).replace(/-/g, '%2D');
-}
-
-function getWeatherBadgeColor(condition) {
+function getWeatherEmoji(condition) {
   const normalized = String(condition).toLowerCase();
 
   if (normalized.includes('clear')) {
-    return 'f59e0b';
+    return '🌤️';
   }
 
   if (normalized.includes('cloud')) {
-    return '64748b';
+    return '☁️';
   }
 
   if (normalized.includes('rain') || normalized.includes('drizzle')) {
-    return '0284c7';
+    return '🌧️';
   }
 
   if (normalized.includes('thunder')) {
-    return '7c3aed';
+    return '⛈️';
   }
 
   if (normalized.includes('snow')) {
-    return '38bdf8';
+    return '🌨️';
   }
 
   if (normalized.includes('fog')) {
-    return '94a3b8';
+    return '🌫️';
   }
 
-  return '0ea5e9';
+  return '⛅';
 }
 
 function formatNumber(value) {
   return Number.isFinite(Number(value)) ? Number(value).toFixed(1) : 'n/a';
+}
+
+function formatInteger(value) {
+  return Number.isFinite(Number(value)) ? String(Math.round(Number(value))) : 'n/a';
+}
+
+function formatLondonTime(timeValue) {
+  if (!timeValue) {
+    return 'n/a';
+  }
+
+  const parsed = new Date(timeValue);
+  if (Number.isNaN(parsed.getTime())) {
+    return 'n/a';
+  }
+
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZoneName: 'short',
+  });
+  const parts = formatter.formatToParts(parsed);
+  const time = parts.filter((part) => part.type === 'hour' || part.type === 'minute' || part.type === 'literal').map((part) => part.value).join('');
+  const zone = parts.find((part) => part.type === 'timeZoneName')?.value;
+
+  return zone ? `${time.trim()} ${zone}` : time.trim();
 }
 
 function describeWeatherCode(code) {
