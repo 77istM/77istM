@@ -41,26 +41,18 @@ const weatherLabel = describeWeatherCode(currentWeather.weather_code);
 const profileViewsBadgeUrl = `https://komarev.com/ghpvc/?username=${encodeURIComponent(owner)}&style=flat-square&color=0e75b6`;
 const currentTimeLabel = formatLondonTime(weather.current?.time);
 const weatherLine = buildWeatherLine(currentWeather, weatherLabel, currentTimeLabel);
+const lastUpdateLabel = formatLondonDateTime(new Date());
 
 const generatedBlock = [
-  '### Live profile snapshot',
-  '',
+
   `![Profile views](${profileViewsBadgeUrl})`,
   '',
   '### 🌥️ London (where I\'m living right now)',
   '',
   weatherLine,
   '',
-  `- Updated: ${new Date().toISOString()}`,
-  `- Public repositories: ${user.public_repos}`,
-  `- Followers: ${user.followers}`,
-  `- Following: ${user.following}`,
+ `![Profile views](${profileViewsBadgeUrl})`,
   '',
-  '### Focus',
-  '',
-  '- Keep the README current without manual edits.',
-  '- Surface the most recently updated work automatically.',
-  '- Keep the project page in GitHub Pages free and static.',
 ].join('\n');
 
 const startMarker = '<!-- AUTO:START -->';
@@ -76,8 +68,13 @@ const nextReadme = readme.replace(
   `${startMarker}\n${generatedBlock}\n\n${endMarker}`
 );
 
-if (nextReadme !== readme) {
-  await writeFile(readmePath, nextReadme);
+const nextReadmeWithTimestamp = nextReadme.replace(
+  /This README is auto-updated every 6 hours by GitHub Actions · Last update: .*/,
+  `This README is auto-updated every 6 hours by GitHub Actions · Last update: ${lastUpdateLabel}`
+);
+
+if (nextReadmeWithTimestamp !== readme) {
+  await writeFile(readmePath, nextReadmeWithTimestamp);
 }
 
 function escapeRegExp(value) {
@@ -154,6 +151,38 @@ function formatLondonTime(timeValue) {
   const zone = parts.find((part) => part.type === 'timeZoneName')?.value;
 
   return zone ? `${time.trim()} ${zone}` : time.trim();
+}
+
+function formatLondonDateTime(dateValue) {
+  const parsed = dateValue instanceof Date ? dateValue : new Date(dateValue);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return 'n/a';
+  }
+
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZoneName: 'short',
+  });
+  const parts = formatter.formatToParts(parsed);
+  const year = parts.find((part) => part.type === 'year')?.value;
+  const month = parts.find((part) => part.type === 'month')?.value;
+  const day = parts.find((part) => part.type === 'day')?.value;
+  const hour = parts.find((part) => part.type === 'hour')?.value;
+  const minute = parts.find((part) => part.type === 'minute')?.value;
+  const zone = parts.find((part) => part.type === 'timeZoneName')?.value;
+
+  if (!year || !month || !day || !hour || !minute) {
+    return 'n/a';
+  }
+
+  return `${year}-${month}-${day} ${hour}:${minute}${zone ? ` ${zone}` : ''}`;
 }
 
 function describeWeatherCode(code) {
