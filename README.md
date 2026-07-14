@@ -14,11 +14,11 @@
 <!-- AUTO:START -->
 ### 🌥️ London (where I'm living right now)
 
-⛅ 23.6°C (feels 22.4°C) · Overcast · 💧 59% · 🍃 20.2 km/h · 🕘 21:15 BST
+⛅ 17.1°C (feels 16.0°C) · Overcast · 💧 82% · 🍃 16.9 km/h · 🕘 03:45 BST
 
 ![Profile views](https://komarev.com/ghpvc/?username=77istM&style=flat-square&color=0e75b6)
 
-This README is auto-updated every 6 hours by GitHub Actions · Last update: 2026-07-13 20:16 BST
+This README is auto-updated every 6 hours by GitHub Actions · Last update: 2026-07-14 02:51 BST
 
 <!-- AUTO:END -->
 
